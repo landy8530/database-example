@@ -46,7 +46,7 @@ skip -- 跳过的行数，比如导出的数据文件前面几行是表头或其
 参考链接： https://www.cnblogs.com/flish/archive/2010/05/31/1748221.html
 
 
-#2 Oracle大数据量更新方法
+# 2 Oracle大数据量更新方法
 
 第一节介绍了大数据量的导入方法，这边介绍一下，大数据量如何批量更新的问题。
 
@@ -66,7 +66,7 @@ UPDATE (SELECT \*+ BYPASS_UJVC *\
 
 此种方法耗时比较久,并且使用这种方式来更新表，需要用于更新的表(最终数据表)的关联字段必须设置为主键，且不可多字段主键。
 
-# 2.2 加入并行度，hash，更加rowid排序
+# 2.2 加入并行度，hash，并且加入rowid排序
 
 ```
 DECLARE
@@ -106,6 +106,6 @@ END;
 
 具体代码示例参考目录bigdata_update
 
-参考链接：
+# 2.3 参考链接：
 1. http://blog.csdn.net/leinuo180/article/details/23344647
 2. http://blog.sina.com.cn/s/blog_69e9f7cd0100nm2t.html
