@@ -105,3 +105,7 @@ END;
 ```
 
 具体代码示例参考目录bigdata_update
+
+参考链接：
+1. http://blog.csdn.net/leinuo180/article/details/23344647
+2. http://blog.sina.com.cn/s/blog_69e9f7cd0100nm2t.html
