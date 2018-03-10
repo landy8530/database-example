@@ -56,8 +56,8 @@ skip -- 跳过的行数，比如导出的数据文件前面几行是表头或其
 UPDATE (SELECT \*+ BYPASS_UJVC *\
          T1.SEND_EMAIL, T3.EMAIL_STATUS_USER
           FROM USER_PROFILE                      T1,
-               EHTEMP.BKOF7959_EMAIL_APP_LEAD    T2,
-               EHTEMP.BKOF7959_EMAIL_FLAG_STATUS T3
+               EMAIL_APP_LEAD    T2,
+               EMAIL_FLAG_STATUS T3
          WHERE T1.USER_PROFILE_ID = T2.USER_PROFILE_ID
            AND T2.EMAIL_FLAG = T3.EMAIL_FLAG
            AND T2.USER_PROFILE_ID IS NOT NULL) R
@@ -80,8 +80,8 @@ DECLARE
     SELECT /*+ use_hash(t1,t2) parallel(t1,4) parallel(t2,4) */
      T3.EMAIL_STATUS_USER, T1.ROWID
       FROM USER_PROFILE                      T1,
-           EHTEMP.BKOF7959_EMAIL_APP_LEAD    T2,
-           EHTEMP.BKOF7959_EMAIL_FLAG_STATUS T3
+           EMAIL_APP_LEAD    T2,
+           EMAIL_FLAG_STATUS T3
      WHERE T1.USER_PROFILE_ID = T2.USER_PROFILE_ID
        AND T2.EMAIL_FLAG = T3.EMAIL_FLAG
        AND T2.USER_PROFILE_ID IS NOT NULL
