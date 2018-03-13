@@ -19,7 +19,7 @@ insert /* +APPEND */ into B(c1,c2) values(x,xx);
 insert /* +APPEND */ into B select * from A@dblink where .....;
 ```
 
-# 1.2 Oracle的Sql Loader (sqlldr) 的用法
+## 1.2 Oracle的Sql Loader (sqlldr) 的用法
 在命令行下执行 Oracle  的 sqlldr 命令，可以看到它的详细参数说明，要着重关注以下几个参数：
 
 ```
@@ -36,7 +36,7 @@ skip -- 跳过的行数，比如导出的数据文件前面几行是表头或其
 
 还有更多的 sqlldr 的参数说明请参考：sql loader的用法。http://psoug.org/reference/sqlloader.html
 
-# 1.3 sql Loader示例
+## 1.3 sql Loader示例
 具体sql loader的示例代码在sqlloader目录下。
 
 执行命令：sqlldr dbuser/dbpass@dbservice control=update_data.ctl
@@ -50,7 +50,7 @@ skip -- 跳过的行数，比如导出的数据文件前面几行是表头或其
 
 第一节介绍了大数据量的导入方法，这边介绍一下，大数据量如何批量更新的问题。
 
-# 2.1 关联更新
+## 2.1 关联更新
 
 ```
 UPDATE (SELECT \*+ BYPASS_UJVC *\
@@ -66,7 +66,7 @@ UPDATE (SELECT \*+ BYPASS_UJVC *\
 
 此种方法耗时比较久,并且使用这种方式来更新表，需要用于更新的表(最终数据表)的关联字段必须设置为主键，且不可多字段主键。
 
-# 2.2 加入并行度，hash，并且加入rowid排序
+## 2.2 加入并行度，hash，并且加入rowid排序
 
 ```
 DECLARE
@@ -87,7 +87,7 @@ DECLARE
        AND T2.USER_PROFILE_ID IS NOT NULL
      ORDER BY T1.ROWID;
 BEGIN
-  DBMS_APPLICATION_INFO.SET_MODULE('EHI_APP', '');
+
   --UPDATE USER_PROFILE FROM APP
   OPEN EMAIL_APP_CUR;
   LOOP
@@ -106,6 +106,99 @@ END;
 
 具体代码示例参考目录bigdata_update
 
-# 2.3 参考链接：
+## 2.3 参考链接：
 1. http://blog.csdn.net/leinuo180/article/details/23344647
 2. http://blog.sina.com.cn/s/blog_69e9f7cd0100nm2t.html
+
+#3 oracle中去掉回车换行空格的方法
+
+```
+UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(13)),''); --换行
+UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(10)),''); --回车
+UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = trim(t2.email_flag); --空格
+```
+
+#4.v$parameter, v$parameter2, v$system_parameter, v$system_parameter2, v$spparameter区别
+
+##4.1 概念
+1. v$parameter
+    v$parameter显示的是session级的参数. 如果没有使用alter session单独设置当前session的参数值.
+    每一个新Session都是从 v$system_parameter上取得系统的当前值而产生Session的v$parameter view. (实验1)
+    在运行过程中, v$parameter可能被用户改变.
+2. v$parameter2
+    v$parameter2显示的是session级的参数.
+    与v$parameter之间的区别则在于v$parameter2把LIST的值分开来了, 一行变多行数据, 用ORDINAL来指示相对的位置. (实验2)
+3. v$system_parameter
+    v$system_parameter显示的是system级的参数, 保存的是使用alter system修改的值(scope=both或者memory). 上面两个都是当前已经生效的参数值.
+4. v$system_parameter2
+    v$system_parameter2显示的是system级的参数.
+5. v$spparameter
+    v$spparameter显示的就是保存在spfile中的参数值(scope=both或者spfile).
+
+##4.2 show parameter（SQL 命令）
+通过sql_trace发现，sqlplus中的show parameter其实查询的是v$parameter，实际的查询语句如下：
+```
+select name name_col_plus_show_param,
+
+       decode(type,
+
+              1,
+
+              'boolean',
+
+              2,
+
+              'string',
+
+              3,
+
+              'integer',
+
+              4,
+
+              'file',
+
+              5,
+
+              'number',
+
+              6,
+
+              'big integer',
+
+              'unknown') type,
+
+       display_value value_col_plus_show_param
+
+  from v$parameter
+
+ where upper(name) like upper('%db_file%')
+
+ order by name_col_plus_show_param, rownum;
+
+ ```
+ ##4.3 底层表解释
+ 通过autotrace，可以知道：
+
+ v$parameter,v$system_parameter的底层表是x$ksppcv和x$ksppi
+
+ v$parameter2,v$system_parameter2的底层表是x$ksppcv2和x$ksppi
+
+ v$spparameter的底层表是x$kspspfile
+
+ ##4.4 参考链接
+ 案例：见GET_DATABASE_NAME.sql
+ http://blog.csdn.net/huang_xw/article/details/6173891
+
+ #5 oracle 的dbms_application_info包
+
+ dbms_application_info提供了通过v$session跟踪脚本运行情况的能力，该包允许我们在v$session设置如下三个列的值：
+ client_info,module,action
+ 还提供了返回这三列的值.dbms_application_info和v$session相关的函数；
+     1. dbms_application_info.set_client_info:一般情况下该列填写客户点的信息，但是也可以根据自己的需要填写自己想要的信息
+     2. dbms_application_info.set_module:根据自己的需要填写自己想要的信息
+     3. dbms_application_info.read_client_info和dbms_application_info.read_module读取这三列的信息
+
+ 案例参见：sqlscripts/dbmsApplicationInfoPkgDemo.sql
+
+ 
