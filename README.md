@@ -3,8 +3,8 @@
 
 # 1. oracle 大数据量加载方法汇总
 
-## 1.1 在 Oracle 数据库中，我们通常在不同数据库的表间记录进行复制或迁移时会用以下几种方法：
-
+## 1.1 数据载入方法
+在 Oracle 数据库中，我们通常在不同数据库的表间记录进行复制或迁移时会用以下几种方法：
 1. A 表的记录导出为一条条分号隔开的 insert 语句，然后执行插入到 B 表中
 2. 建立数据库间的 dblink，然后用 create table B as select * from A@dblink where ...，或 insert into B select * from A@dblink where ...
 3. exp A 表，再 imp 到 B 表，exp 时可加查询条件
