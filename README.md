@@ -183,6 +183,7 @@ SELECT NAME NAME_COL_PLUS_SHOW_PARAM,
  3. v$spparameter的底层表是x$kspspfile
  ## 4.4 参考链接
  案例：见GET_DATABASE_NAME.sql
+ 
  http://blog.csdn.net/huang_xw/article/details/6173891
 
  # 5 oracle 的dbms_application_info包
