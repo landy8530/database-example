@@ -193,6 +193,7 @@ SELECT NAME NAME_COL_PLUS_SHOW_PARAM,
  dbms_application_info提供了通过v$session跟踪脚本运行情况的能力，该包允许我们在v$session设置如下三个列的值：**client_info,module,action**
   
  还提供了返回这三列的值.dbms_application_info和v$session相关的函数:
+ 
      1.dbms_application_info.set_client_info:一般情况下该列填写客户点的信息，但是也可以根据自己的需要填写自己想要的信息。
      
      2.dbms_application_info.set_module:根据自己的需要填写自己想要的信息。
