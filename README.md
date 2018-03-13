@@ -110,7 +110,7 @@ END;
 1. http://blog.csdn.net/leinuo180/article/details/23344647
 2. http://blog.sina.com.cn/s/blog_69e9f7cd0100nm2t.html
 
-#3 oracle中去掉回车换行空格的方法
+# 3 oracle中去掉回车换行空格的方法
 
 ```
 UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(13)),''); --换行
@@ -118,9 +118,9 @@ UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(1
 UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = trim(t2.email_flag); --空格
 ```
 
-#4.v$parameter, v$parameter2, v$system_parameter, v$system_parameter2, v$spparameter区别
+# 4.v$parameter, v$parameter2, v$system_parameter, v$system_parameter2, v$spparameter区别
 
-##4.1 概念
+## 4.1 概念
 1. v$parameter
     v$parameter显示的是session级的参数. 如果没有使用alter session单独设置当前session的参数值.
     每一个新Session都是从 v$system_parameter上取得系统的当前值而产生Session的v$parameter view. (实验1)
@@ -135,62 +135,57 @@ UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = trim(t2.email_flag); --空格
 5. v$spparameter
     v$spparameter显示的就是保存在spfile中的参数值(scope=both或者spfile).
 
-##4.2 show parameter（SQL 命令）
+## 4.2 show parameter（SQL 命令）
 通过sql_trace发现，sqlplus中的show parameter其实查询的是v$parameter，实际的查询语句如下：
 ```
-select name name_col_plus_show_param,
-
-       decode(type,
-
+SELECT NAME NAME_COL_PLUS_SHOW_PARAM,
+       DECODE(TYPE,
+       
               1,
-
+              
               'boolean',
-
+              
               2,
-
+              
               'string',
-
+              
               3,
-
+              
               'integer',
-
+              
               4,
-
+              
               'file',
-
+              
               5,
-
+              
               'number',
-
+              
               6,
-
+              
               'big integer',
+              
+              'unknown') TYPE,
+       
+       DISPLAY_VALUE VALUE_COL_PLUS_SHOW_PARAM
 
-              'unknown') type,
+  FROM V$PARAMETER
 
-       display_value value_col_plus_show_param
+ WHERE UPPER(NAME) LIKE UPPER('%db_file%')
 
-  from v$parameter
-
- where upper(name) like upper('%db_file%')
-
- order by name_col_plus_show_param, rownum;
+ ORDER BY NAME_COL_PLUS_SHOW_PARAM, ROWNUM;
 
  ```
- ##4.3 底层表解释
+ ## 4.3 底层表解释
  通过autotrace，可以知道：
-
- v$parameter,v$system_parameter的底层表是x$ksppcv和x$ksppi
-
- v$parameter2,v$system_parameter2的底层表是x$ksppcv2和x$ksppi
-
- v$spparameter的底层表是x$kspspfile
-
- ##4.4 参考链接
+ 1. v$parameter,v$system_parameter的底层表是x$ksppcv和x$ksppi
+ 2. v$parameter2,v$system_parameter2的底层表是x$ksppcv2和x$ksppi
+ 3. v$spparameter的底层表是x$kspspfile
+ ## 4.4 参考链接
  案例：见GET_DATABASE_NAME.sql
  http://blog.csdn.net/huang_xw/article/details/6173891
 
- #5 oracle 的dbms_application_info包
+ # 5 oracle 的dbms_application_info包
 
  dbms_application_info提供了通过v$session跟踪脚本运行情况的能力，该包允许我们在v$session设置如下三个列的值：
  client_info,module,action
