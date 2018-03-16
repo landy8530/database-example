@@ -1,0 +1,39 @@
+--在FETCH INTO中使用BULK COLLECT
+DECLARE
+  CURSOR EMP_CUR IS
+    SELECT EMPNO, ENAME, HIREDATE FROM EMP_TEST;
+
+  TYPE EMP_REC_TYPE IS RECORD(
+    EMPNO    EMP_TEST.EMPNO%TYPE,
+    ENAME    EMP_TEST.ENAME%TYPE,
+    HIREDATE EMP_TEST.HIREDATE%TYPE);
+  -- 定义基于记录的嵌套表
+  TYPE NESTED_EMP_TYPE IS TABLE OF EMP_REC_TYPE;
+  -- 声明集合变量
+  EMP_TAB NESTED_EMP_TYPE;
+  -- 定义了一个变量来作为limit的值
+  V_LIMIT PLS_INTEGER := 5;
+  -- 定义变量来记录FETCH次数
+  V_COUNTER PLS_INTEGER := 0;
+BEGIN
+  OPEN EMP_CUR;
+
+  LOOP
+    -- fetch时使用了BULK COLLECT子句
+    FETCH EMP_CUR BULK COLLECT
+      INTO EMP_TAB LIMIT V_LIMIT; -- 使用limit子句限制提取数据量
+
+    EXIT WHEN EMP_TAB.COUNT = 0; -- 注意此时游标退出使用了emp_tab.COUNT，而不是emp_cur%notfound
+    V_COUNTER := V_COUNTER + 1; -- 记录使用LIMIT之后fetch的次数
+
+    FOR I IN EMP_TAB.FIRST .. EMP_TAB.LAST LOOP
+      DBMS_OUTPUT.PUT_LINE('当前记录： ' || EMP_TAB(I)
+                           .EMPNO || CHR(9) || EMP_TAB(I)
+                           .ENAME || CHR(9) || EMP_TAB(I).HIREDATE);
+    END LOOP;
+  END LOOP;
+
+  CLOSE EMP_CUR;
+
+  DBMS_OUTPUT.PUT_LINE('总共获取次数为：' || V_COUNTER);
+END;

@@ -1,0 +1,26 @@
+--在RETURNING INTO中使用BULK COLLECT
+DECLARE
+  TYPE EMP_REC_TYPE IS RECORD(
+    EMPNO    EMP_TEST.EMPNO%TYPE,
+    ENAME    EMP_TEST.ENAME%TYPE,
+    HIREDATE EMP_TEST.HIREDATE%TYPE);
+  TYPE NESTED_EMP_TYPE IS TABLE OF EMP_REC_TYPE;
+  EMP_TAB NESTED_EMP_TYPE;
+BEGIN
+  DELETE FROM EMP_TEST
+   WHERE EMPNO = 20 RETURNING EMPNO, ENAME, HIREDATE -- 使用returning 返回这几个列
+   BULK COLLECT INTO EMP_TAB; -- 将返回的列的数据批量插入到集合变量
+
+  DBMS_OUTPUT.PUT_LINE('删除 ' || SQL%ROWCOUNT || ' 行记录');
+  COMMIT;
+
+  IF EMP_TAB.COUNT > 0 THEN
+    -- 当集合变量不为空时，输出所有被删除的元素
+    FOR I IN EMP_TAB.FIRST .. EMP_TAB.LAST LOOP
+      DBMS_OUTPUT.PUT_LINE('当前记录：' || EMP_TAB(I)
+                           .EMPNO || CHR(9) || EMP_TAB(I)
+                           .ENAME || CHR(9) || EMP_TAB(I)
+                           .HIREDATE || ' 已被删除');
+    END LOOP;
+  END IF;
+END;

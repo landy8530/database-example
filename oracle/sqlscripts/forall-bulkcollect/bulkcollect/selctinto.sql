@@ -1,0 +1,22 @@
+--在SELECT INTO中使用BULK COLLECT
+--说明：使用BULK COLLECT一次即可提取所有行并绑定到记录变量，这就是所谓的批量绑定。
+DECLARE
+  -- 定义记录类型
+  TYPE EMP_REC_TYPE IS RECORD(
+    EMPNO    EMP_TEST.EMPNO%TYPE,
+    ENAME    EMP_TEST.ENAME%TYPE,
+    HIREDATE EMP_TEST.HIREDATE%TYPE);
+  -- 定义基于记录的嵌套表
+  TYPE NESTED_EMP_TYPE IS TABLE OF EMP_REC_TYPE;
+  -- 声明变量
+  EMP_TAB NESTED_EMP_TYPE;
+BEGIN
+  -- 使用BULK COLLECT将所得的结果集一次性绑定到记录变量emp_tab中
+  SELECT EMPNO, ENAME, HIREDATE BULK COLLECT INTO EMP_TAB FROM EMP_TEST;
+
+  FOR I IN EMP_TAB.FIRST .. EMP_TAB.LAST LOOP
+    DBMS_OUTPUT.PUT_LINE('当前记录： ' || EMP_TAB(I)
+                         .EMPNO || CHR(9) || EMP_TAB(I)
+                         .ENAME || CHR(9) || EMP_TAB(I).HIREDATE);
+  END LOOP;
+END;
