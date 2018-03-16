@@ -196,31 +196,3 @@ set serveroutput on size 1000000
             AND T2.LEAD_ID IS NOT NULL) R
     SET R.EMAIL_STATUS = R.EMAIL_STATUS_LEAD;*/
 
-
-
-
--- 分析过程
-
--- 更新app 和lead 需要注意,循环EMAIL_APP_LEAD 中的数据，
--- 1.如果user_profile_id有值，就用user_profile_id直接更新user_profile中的状态
--- 2.如果lead_id有值，需要同步更新lead表中的email_status
--- 3.确认一下corrected do not mail 列对应的是不是全是应该改成bounced的？如果是可以忽略这列，反正我们用appid和leadid匹配数据。
--- 4.user_profile_id 和lead_id 同时为空是不存在的,所以app_id可以不理会
-
--- 更新sbg也是只要根据user_profile_id 更新即可
-
--- SELECT COUNT(1) FROM USER_PROFILE
-
--- SELECT count(DISTINCT user_profile_id) FROM EMAIL_APP_LEAD ;
-
- -- corrected do not mail 列对应的全是应该改成bounced的
--- SELECT * FROM EMAIL_APP_LEAD WHERE corrected_do_not_mail IS NOT NULL ;
-
- -- user_profile_id 和lead_id 同时为空是不存在的
--- SELECT * FROM EMAIL_APP_LEAD WHERE user_profile_id IS  NULL AND lead_id IS NULL ;
-
- --SBG 中，user_profile_id 为空也是不存在的
--- SELECT COUNT(1) FROM EMAIL_SBG WHERE user_profile_id IS NULL ;
- 
- --
---  SELECT * FROM EMAIL_APP_LEAD WHERE user_profile_id IS NOT NULL AND email_flag IS NULL ;
