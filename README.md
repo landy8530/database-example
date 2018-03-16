@@ -411,7 +411,7 @@ FORALL与BULK COLLECT是实现批量SQL的两个重要方式，我们可以将�
        (I);
 
    COMMIT;
-   DBMS_OUTPUT.PUT_LINE('×Ü¹²Ïò tb_emp ±íÖÐ²åÈë¼ÇÂ¼Êý£º ' || EMP_TAB.COUNT);
+   DBMS_OUTPUT.PUT_LINE('总共向 tb_emp 表中插入记录数： ' || EMP_TAB.COUNT);
  END;
 ```
 
