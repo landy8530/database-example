@@ -484,3 +484,66 @@ Oracle中也引入了simple_integer类型，不过不能包含null值，范围�
     select trunc(123.567,-2) from dual;--100,第二个参数可以为负数，表示将小数点左边指定位数后面的部分截去，即均以0记;
     select trunc(123.567) from dual;--123,默认截去小数点后面的部分;
 ```
+
+# 8 With As 的用法
+
+## 8.1 语法
+with as语法
+–针对一个别名
+with tmp as (select * from tb_name)
+
+–针对多个别名
+with
+   tmp as (select * from tb_name),
+   tmp2 as (select * from tb_name2),
+   tmp3 as (select * from tb_name3),
+
+```
+--相当于建了个e临时表
+with e as (select * from scott.emp e where e.empno=7499)
+select * from e;
+
+--相当于建了e、d临时表
+with
+     e as (select * from scott.emp),
+     d as (select * from scott.dept)
+select * from e, d where e.deptno = d.deptno;
+```
+
+## 8.2 用法
+其实就是把一大堆重复用到的sql语句放在with as里面，取一个别名，后面的查询就可以用它，这样对于大批量的sql语句起到一个优化的作用，而且清楚明了。
+
+向一张表插入数据的with as用法
+
+```
+insert into table2
+with
+    s1 as (select rownum c1 from dual connect by rownum <= 10),
+    s2 as (select rownum c2 from dual connect by rownum <= 10)
+select a.c1, b.c2 from s1 a, s2 b where...;
+```
+
+select s1.sid, s2.sid from s1 ,s2需要有关联条件，不然结果会是笛卡尔积。
+with as 相当于虚拟视图。
+
+with as短语，也叫做子查询部分(subquery factoring)，可以让你做很多事情，定义一个sql片断，该sql片断会被整个sql语句所用到。有的时候，是为了让sql语句的可读性更高些，也有可能是在union all的不同部分，作为提供数据的部分。
+　　
+特别对于union all比较有用。因为union all的每个部分可能相同，但是如果每个部分都去执行一遍的话，则成本太高，所以可以使用with as短语，则只要执行一遍即可。如果with as短语所定义的表名被调用两次以上，则优化器会自动将with as短语所获取的数据放入一个temp表里，如果只是被调用一次，则不会。而提示materialize则是强制将with as短语里的数据放入一个全局临时表里。很多查询通过这种方法都可以提高速度。
+
+```
+with
+    sql1 as (select to_char(a) s_name from test_tempa),
+    sql2 as (select to_char(b) s_name from test_tempb where not exists (select s_name from sql1 where rownum=1))
+select * from sql1
+union all
+select * from sql2
+union all
+select 'no records' from dual
+       where not exists (select s_name from sql1 where rownum=1)
+       and not exists (select s_name from sql2 where rownum=1);
+```
+
+## 8.3 优点
+
+ 增加了sql的易读性，如果构造了多个子查询，结构会更清晰；
+ 更重要的是：“一次分析，多次使用”，这也是为什么会提供性能的地方，达到了“少读”的目标
