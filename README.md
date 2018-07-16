@@ -526,9 +526,12 @@ select a.c1, b.c2 from s1 a, s2 b where...;
 select s1.sid, s2.sid from s1 ,s2需要有关联条件，不然结果会是笛卡尔积。
 with as 相当于虚拟视图。
 
+
 with as短语，也叫做子查询部分(subquery factoring)，可以让你做很多事情，定义一个sql片断，该sql片断会被整个sql语句所用到。有的时候，是为了让sql语句的可读性更高些，也有可能是在union all的不同部分，作为提供数据的部分。
-　　
+
+
 特别对于union all比较有用。因为union all的每个部分可能相同，但是如果每个部分都去执行一遍的话，则成本太高，所以可以使用with as短语，则只要执行一遍即可。如果with as短语所定义的表名被调用两次以上，则优化器会自动将with as短语所获取的数据放入一个temp表里，如果只是被调用一次，则不会。而提示materialize则是强制将with as短语里的数据放入一个全局临时表里。很多查询通过这种方法都可以提高速度。
+
 
 ```
 with
