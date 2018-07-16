@@ -19,7 +19,7 @@ BEGIN
     vDatabase := GET_DATABASE_NAME;
 
     -- =======================================================
-	-- Only run on EHI
+	-- Only run on xhf
     if (vDatabase in('PROD'))  then
         NULL;
     else
