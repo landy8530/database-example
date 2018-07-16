@@ -50,7 +50,7 @@ PROMPT --create PROCEDURE update_email_status
 CREATE OR REPLACE PROCEDURE update_email_status AUTHID CURRENT_USER AS
   /********************************************************************************
     NAME:       update_email_status
-    PURPOSE:    Apply a SQL change to do email status data cleanse according to the reports from Webbula.
+    PURPOSE:
 
     REVISIONS:
     Ver        Date        Author           Description

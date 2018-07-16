@@ -1,9 +1,7 @@
 CREATE OR REPLACE FUNCTION "GET_DATABASE_NAME"
 return varchar2
 AUTHID CURRENT_USER AS
-/*
- * Castro version: 3
- */
+
 
 vDatabaseName    v$parameter.value%TYPE := NULL;
 vSelectStatement varchar2(200)          := NULL;
