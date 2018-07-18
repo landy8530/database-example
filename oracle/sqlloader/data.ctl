@@ -4,7 +4,7 @@ INFILE 'data.csv' --指定外部数据文件，可以写多个 INFILE "another_d
 BADFILE 'data.bad' --这里还可以使用 BADFILE、DISCARDFILE 来指定坏数据和丢弃数据的文件，
 DISCARDFILE 'data.dsc'
 TRUNCATE --操作类型，用 truncate table 来清除表中原有记录
-INTO TABLE EMAIL_APP_LEAD -- 要插入记录的表
+INTO TABLE T_TEST_SQL_LOAD -- 要插入记录的表
 fields terminated by ','  -- 数据中每行记录用 "," 分隔
 TRAILING NULLCOLS  --表的字段没有对应的值时允许为空
 (

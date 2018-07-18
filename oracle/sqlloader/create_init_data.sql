@@ -41,8 +41,8 @@ END;
 
 whenever sqlerror exit -1;
 
--- create temp table EMAIL_APP_LEAD;
-create table EMAIL_APP_LEAD
+-- create temp table T_TEST_SQL_LOAD;
+create table T_TEST_SQL_LOAD
 (
   USER_PROFILE_ID         NUMBER,
   LEAD_ID                 NUMBER,

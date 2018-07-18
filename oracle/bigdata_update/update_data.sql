@@ -82,7 +82,7 @@ BEGIN
     SELECT /*+ use_hash(t1,t2) parallel(t1,4) parallel(t2,4) */
      T3.EMAIL_STATUS_USER, T1.ROWID
       FROM USER_PROFILE                      T1,
-           EHTEMP.EMAIL_APP_LEAD    T2,
+           EHTEMP.T_TEST_SQL_LOAD    T2,
            EHTEMP.EMAIL_FLAG_STATUS T3
      WHERE TRIM(T2.EMAIL_FLAG) = TRIM(T3.EMAIL_FLAG)
        AND LOWER(T1.LOGIN_ID) = LOWER(T2.EMAIL(+))
@@ -93,7 +93,7 @@ BEGIN
     SELECT /*+ use_hash(t1,t2) parallel(t1,4) parallel(t2,4) */
      T3.EMAIL_STATUS_LEAD, T1.ROWID
       FROM LEAD                              T1,
-           EHTEMP.EMAIL_APP_LEAD    T2,
+           EHTEMP.T_TEST_SQL_LOAD    T2,
            EHTEMP.EMAIL_FLAG_STATUS T3
      WHERE TRIM(T2.EMAIL_FLAG) = TRIM(T3.EMAIL_FLAG)
      AND LOWER(T1.EMAIL) = LOWER(T2.EMAIL(+))
@@ -176,7 +176,7 @@ set serveroutput on size 1000000
 /*UPDATE (SELECT \*+ BYPASS_UJVC *\
          T1.SEND_EMAIL, T3.EMAIL_STATUS_USER
           FROM USER_PROFILE                      T1,
-               EMAIL_APP_LEAD    T2,
+               T_TEST_SQL_LOAD    T2,
                EMAIL_FLAG_STATUS T3
          WHERE T1.USER_PROFILE_ID = T2.USER_PROFILE_ID
            AND T2.EMAIL_FLAG = T3.EMAIL_FLAG
@@ -189,7 +189,7 @@ set serveroutput on size 1000000
  /*UPDATE (SELECT \*+ BYPASS_UJVC *\
           T1.EMAIL_STATUS, T3.EMAIL_STATUS_LEAD
            FROM LEAD                              T1,
-                EMAIL_APP_LEAD    T2,
+                T_TEST_SQL_LOAD    T2,
                 EMAIL_FLAG_STATUS T3
           WHERE T1.LEAD_ID = T2.LEAD_ID
             AND T2.EMAIL_FLAG = T3.EMAIL_FLAG

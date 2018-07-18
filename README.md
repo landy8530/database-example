@@ -68,7 +68,7 @@ skip -- 跳过的行数，比如导出的数据文件前面几行是表头或其
 UPDATE (SELECT \*+ BYPASS_UJVC *\
          T1.SEND_EMAIL, T3.EMAIL_STATUS_USER
           FROM USER_PROFILE                      T1,
-               EMAIL_APP_LEAD    T2,
+               T_TEST_SQL_LOAD    T2,
                EMAIL_FLAG_STATUS T3
          WHERE T1.USER_PROFILE_ID = T2.USER_PROFILE_ID
            AND T2.EMAIL_FLAG = T3.EMAIL_FLAG
@@ -92,7 +92,7 @@ DECLARE
     SELECT /*+ use_hash(t1,t2) parallel(t1,4) parallel(t2,4) */
      T3.EMAIL_STATUS_USER, T1.ROWID
       FROM USER_PROFILE                      T1,
-           EMAIL_APP_LEAD    T2,
+           T_TEST_SQL_LOAD    T2,
            EMAIL_FLAG_STATUS T3
      WHERE T1.USER_PROFILE_ID = T2.USER_PROFILE_ID
        AND T2.EMAIL_FLAG = T3.EMAIL_FLAG
@@ -126,9 +126,9 @@ END;
 # 3 oracle中去掉回车换行空格的方法
 
 ```
-UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(13)),''); --换行
-UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(10)),''); --回车
-UPDATE EMAIL_APP_LEAD t2 SET t2.email_flag = trim(t2.email_flag); --空格
+UPDATE T_TEST_SQL_LOAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(13)),''); --换行
+UPDATE T_TEST_SQL_LOAD t2 SET t2.email_flag = replace(t2.email_flag,to_char(chr(10)),''); --回车
+UPDATE T_TEST_SQL_LOAD t2 SET t2.email_flag = trim(t2.email_flag); --空格
 ```
 
 # 4.v$parameter, v$parameter2, v$system_parameter, v$system_parameter2, v$spparameter区别
