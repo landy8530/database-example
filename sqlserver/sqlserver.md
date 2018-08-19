@@ -40,3 +40,31 @@ END
 SELECT STUFF((SELECT ','+字段名 FROM 表名 for xml path('')),1,1,'')
 ```
 STUFF函数的意义是去掉组成字符串的尾数逗号。
+
+# 2 查看sqlserver被锁的表以及如何解锁
+
+## 2.1 检索死锁进程
+```
+--检索死锁进程  
+select spid, blocked, loginame, last_batch, status, cmd, hostname, program_name  
+from sysprocesses  
+where spid in  
+( select blocked from sysprocesses where blocked <> 0 ) or (blocked <>0)  
+```
+
+## 2.2 查看被锁表
+
+```
+select   request_session_id   spid,OBJECT_NAME(resource_associated_entity_id) tableName   
+from   sys.dm_tran_locks where resource_type='OBJECT'
+spid   锁表进程 
+tableName   被锁表名
+```
+## 2.3 解锁
+```
+declare @spid  int 
+Set @spid  = 57 --锁表进程
+declare @sql varchar(1000)
+set @sql='kill '+cast(@spid  as varchar)
+exec(@sql)
+```
