@@ -1,4 +1,10 @@
-# centos 7.2 mysql5.7 不区分表名大小写
+# Table of Contents
+
+* [1 centos 7.2 mysql5.7 不区分表名大小写](#1-centos-72-mysql57-不区分表名大小写)
+* [2 mysql5.7.x:this is incompatible with DISTINCT](#2-mysql57xthis-is-incompatible-with-distinct)
+
+
+# 1 centos 7.2 mysql5.7 不区分表名大小写
 让MYSQL不区分表名大小写的方法其实很简单：
 　　1.用ROOT登录，修改/etc/my.cnf
 　　2.在[mysqld]下加入一行：lower_case_table_names=1
@@ -10,7 +16,7 @@ MYSQL在LINUX下数据库名、表名、列名、别名大小写规则如下：
 3.列名与列的别名在所有的情况下均是忽略大小写的
 4.变量名也是严格区分大小写的
 
-# mysql5.7.x:this is incompatible with DISTINCT
+# 2 mysql5.7.x:this is incompatible with DISTINCT
 
 DISTINCT关键字经常在MySQL中使用，在mysql5.7以前的版本中一般没有什么问题，但是在5.7以后的版本中会遇到这样的错误。
 ```
