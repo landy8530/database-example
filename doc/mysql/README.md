@@ -30,7 +30,8 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 ```
 
 还有一种错也是不兼容的问题导致的
+```
 Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column ‘nctest.pivot.id’ which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
-
+```
 这种问题就是sql_mode=only_full_group_by导致的，去掉only_full_group_by就解决了
 
