@@ -36,6 +36,9 @@
   * [8.1 语法](#81-语法)
   * [8.2 用法](#82-用法)
   * [8.3 优点](#83-优点)
+* [9 Oracle-like运算符&转义操作符](#9-Oracle like运算符&转义操作符)
+  * [9.1 LIKE比较运算符](#91-LIKE比较运算符)
+  * [9.2 转义（escape）操作符](#92-转义（escape）操作符)
 
 
 # 1. oracle 大数据量加载方法汇总
@@ -587,3 +590,36 @@ select 'no records' from dual
 
  增加了sql的易读性，如果构造了多个子查询，结构会更清晰；
  更重要的是：“一次分析，多次使用”，这也是为什么会提供性能的地方，达到了“少读”的目标
+
+# 9 Oracle like运算符&转义操作符
+
+## 9.1 LIKE比较运算符
+
+LIKE比较运算符也可以称为通配符。LIKE运算符可以使用以下两个通配符“%”和“_”，其中“%”代表零个或多个字符，“_”代表一个且只能是一个字符。
+
+比如：如果您只记得SALESMAN的第一个字符为S，第三个字符为L，第五个字符为S，那么查询语句该怎么写？
+
+SQL>select empno, ename, sal, job from emp where job like‘S_L_S%’
+
+## 9.2 转义（escape）操作符
+
+提问：如果要查询的字符串中含有“_”或“%”，又该怎么处理？
+解决：可以使用转义（escape）关键字来完成此任务，为此先创建一个临时的表，之后再往该表中插入1行记录，其值包含通配符。
+
+执行语句：
+
+（1）create table dept_temp as select *from dept;
+
+（2）insert into dept_temp values (88,‘IT_RESEARCH’, ‘BEIJING’);
+
+（3）select * from dept_temp where dname like ‘IT\_%’ escape ‘\’;
+
+解释：定义’\’为转义（escape）符，即在’\’之后的’_’字符已经不是通配符，而是它本来的含义，即下划线。
+
+对于命令：
+
+SQL>select * from student where sname like ‘%\_%’ escape ‘\’;
+
+其中’%\_%’一头一尾两个%意思是通配符：含有零个或多个字符，中间\是转义运算符，也就是\_表示的是下划线，而不是LIKE通配符，那么’%\_%’的意思就是名字含有下划线的学生，该下划线前后都可以有字符，也可以都没有字符。
+
+另外，$也是转义运算符！作用和\一样。
