@@ -623,3 +623,38 @@ SQL>select * from student where sname like ‘%\_%’ escape ‘\’;
 其中’%\_%’一头一尾两个%意思是通配符：含有零个或多个字符，中间\是转义运算符，也就是\_表示的是下划线，而不是LIKE通配符，那么’%\_%’的意思就是名字含有下划线的学生，该下划线前后都可以有字符，也可以都没有字符。
 
 另外，$也是转义运算符！作用和\一样。
+
+# 10 RAISE_APPLICATION_ERROR 抛出自定义错误
+
+RAISE_APPLICATION_ERROR在子程序内部使用时，能从存储子程序中抛出自定义的错误消息。这样就能将错误报告给应用程序而避免范围未捕获异常。
+
+语法如下：
+
+```
+RAISE_APPLICATION_ERROR(error_number, error_message, [keep_errors]);
+```
+
+error_number是范围在-20000到-20999之间的负整数，error_message是最大长度为2048字节的字符串，keep_errors是一个可选的布尔值，True表示新的错误将被添加到已经抛出的错误列表中，False表示新的错误将替换当前的错误列表，默认为False。
+
+RAISE_APPLICATION_ERROR只能在存储的子程序中调用。当被调用时，将结束当前的子程序并返回一个用户自定义的错误代码和错误消息给应用程序，这些错误代码和错误消息可以像任何的Oracle错误一样被捕获。
+
+```
+CRAETE OR REPLACE PROCEDURE  registeremployee(...)
+AS
+    ...
+BEGIN
+    IF ... THEN
+        RAISE_APPLICATION_ERROR(-20000, '员工编号不能为空');
+    ELSIF ... THEN
+        RAISE_APPLICATION_ERROR(-20001, '员工已存在');
+    END IF;
+    ...
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20003, '插入数据时出现错误！异常编码：'
+                                         || SQLCODE
+                                         || '异常描述：'
+                                         || SQLERRM);
+END;
+```
+别的子程序或语句块调用这个过程时，如果有相应的异常，就会像普通的Oracle错误一样被捕获。
