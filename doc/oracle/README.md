@@ -37,9 +37,9 @@
   * [8.2 用法](#82-用法)
   * [8.3 优点](#83-优点)
 * [9 Oracle like运算符和转义操作符](#9-oracle-like运算符和转义操作符)
-  * [9.1 LIKE运算符](#91-LIKE运算符)
+  * [9.1 like运算符](#91-like运算符)
   * [9.2 转义操作符](#92-转义操作符)
-
+* [10 RAISE_APPLICATION_ERROR 抛出自定义错误](#10-RAISE_APPLICATION_ERROR-抛出自定义错误)
 
 # 1. oracle 大数据量加载方法汇总
 
@@ -593,7 +593,7 @@ select 'no records' from dual
 
 # 9 Oracle like运算符和转义操作符
 
-## 9.1 LIKE运算符
+## 9.1 like运算符
 
 LIKE比较运算符也可以称为通配符。LIKE运算符可以使用以下两个通配符“%”和“_”，其中“%”代表零个或多个字符，“_”代表一个且只能是一个字符。
 
