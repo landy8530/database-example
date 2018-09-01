@@ -39,7 +39,7 @@
 * [9 Oracle like运算符和转义操作符](#9-oracle-like运算符和转义操作符)
   * [9.1 like运算符](#91-like运算符)
   * [9.2 转义操作符](#92-转义操作符)
-* [10 RAISE_APPLICATION_ERROR 抛出自定义错误](#10-RAISE_APPLICATION_ERROR-抛出自定义错误)
+* [10 Oracle抛出自定义错误](#10-Oracle抛出自定义错误)
 
 # 1. oracle 大数据量加载方法汇总
 
@@ -624,7 +624,7 @@ SQL>select * from student where sname like ‘%\_%’ escape ‘\’;
 
 另外，$也是转义运算符！作用和\一样。
 
-# 10 RAISE_APPLICATION_ERROR 抛出自定义错误
+# 10 Oracle抛出自定义错误
 
 RAISE_APPLICATION_ERROR在子程序内部使用时，能从存储子程序中抛出自定义的错误消息。这样就能将错误报告给应用程序而避免范围未捕获异常。
 
