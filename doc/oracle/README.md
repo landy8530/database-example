@@ -30,8 +30,8 @@
   * [6.5 FORALL与BULK COLLECT综合运用](#65-forall与bulk-collect综合运用)
   * [6.6 总结](#66-总结)
 * [7 ORACLE TRUNC()函数](#7-oracle-trunc函数)
-  * [7.1【trunc(for dates)】TRUNC()函数处理日期](#71【truncfor-dates】trunc函数处理日期)
-  * [7.2【TRUNC(for number)】TRUNC()函数处理number型数字](#72-【truncfor-number】trunc函数处理number型数字)
+  * [7.1 TRUNC函数处理日期](#71-trunc函数处理日期)
+  * [7.2 TRUNC函数处理number型数字](#72-trunc函数处理number型数字)
 * [8 With As 的用法](#8-with-as-的用法)
   * [8.1 语法](#81-语法)
   * [8.2 用法](#82-用法)
@@ -498,7 +498,7 @@ Oracle中也引入了simple_integer类型，不过不能包含null值，范围�
 # 7 ORACLE TRUNC()函数
   TRUNC()：类似截取函数，按指定的格式截取输入的数据。
 
-## 7.1【trunc(for dates)】TRUNC()函数处理日期
+## 7.1 TRUNC函数处理日期
     语法格式：TRUNC（date[,fmt]）
 　  其中：date 一个日期值；fmt 日期格式。
     该日期将按指定的日期格式截取；忽略它则由最近的日期截取。
@@ -514,7 +514,7 @@ Oracle中也引入了simple_integer类型，不过不能包含null值，范围�
    select trunc(sysdate ,'MI') from dual;--2017/2/13 15:13:00,返回本分钟的开始时间
 ```
 
-## 7.2 【TRUNC(for number)】TRUNC()函数处理number型数字
+## 7.2 TRUNC函数处理number型数字
     语法格式：TRUNC（number[,decimals]）
     其中： number 待做截取处理的数值；decimals 指明需保留小数点后面的位数，可选项，忽略它则截去所有的小数部分。
     注意：截取时并不对数据进行四舍五入。
